@@ -1,13 +1,13 @@
-import requests, json, oauthlib
+import requests, json
 from requests_oauthlib import OAuth1Session
 
-# headers for authentication (v1.1 and v2 respectively )
-headersv1 = OAuth1Session('client_key', client_secret='client_secret', resource_owner_key='resource_owner_key', resource_owner_secret='resource_owner_secret')
-headersv2 = {"Authorization": "Bearer <token>"}
+# authentication (v1.1 and v2 respectively)
+oauthv1 = OAuth1Session('<api token>', client_secret='<api secret>', resource_owner_key='<resource owner key>', resource_owner_secret='<resource owner secret>')
+oauthv2 = {"Authorization": "Bearer <token>"}
 
 def getUserID(username):
     UIDrequest = "https://api.twitter.com/2/users/by?usernames={}".format(username)
-    UIDresponse = requests.get(UIDrequest, headers=headersv2)
+    UIDresponse = requests.get(UIDrequest, headers=oauthv2)
 
     # why this mess? 
     # twitter api response nests an object inside of an array (which is inside of an object)
@@ -18,20 +18,19 @@ def getUserID(username):
 def getFleet(userID):
     # fleet: a group of ships sailing together, engaged in the same activity, or under the same ownership.
     # so, essentially, a list of tweets in this context
-    fleetRequest = "https://api.twitter.com/2/users/{}/tweets?expansions=attachments.media_keys,attachments.poll_ids,geo.place_id&tweet.fields=conversation_id,created_at&max_results=5".format(userID)
-    fleetResponse = requests.get(fleetRequest, headers=headersv2) 
+    fleetRequest = "https://api.twitter.com/2/users/{}/tweets?expansions=attachments.media_keys,attachments.poll_ids,geo.place_id&tweet.fields=conversation_id,created_at".format(userID)
+    fleetResponse = requests.get(fleetRequest, headers=oauthv2) 
 
     return fleetResponse
 
-# it looks like twitter api v2 doesn't really look good for media fetching, rolling back to v1 just for this purpose, in progress
-# def getTweet(tweetID):
-    # tweetRequest = "https://api.twitter.com/2/tweets/{}?media.fields=type,url&tweet.fields=id,text,attachments,conversation_id,created_at".format(id)
-    # tweetResponse = requests.get(tweetRequest, headers=headersv2)
 
-    # tweetRequest = "https://api.twitter.com/1.1/statuses/lookup.json?id={}".format(id)
-    # tweetResponse = headersv1.get(tweetRequest)
+# what happened here?
+# it looks like twitter api v2 doesn't really look good for media fetching, rolling back to v1 just for this purpose
+def getTweet(tweetID):
+    tweetRequest = "https://api.twitter.com/1.1/statuses/show.json?id={}".format(tweetID)
+    tweetResponse = oauthv1.get(tweetRequest)
 
-    # return tweetResponse
+    return tweetResponse
 
 def fleetOwner(username):
     # line 16-17 for explaination
