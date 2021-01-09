@@ -1,4 +1,4 @@
-import requests, json
+import json
 from requests_oauthlib import OAuth1Session
 
 # authentication (v1.1 // oauth 1.0)
