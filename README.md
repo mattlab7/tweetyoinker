@@ -1,5 +1,4 @@
-<center>
-<img src="https://static.wikia.nocookie.net/yokaiwatch/images/7/7f/Yoink_Art.jpg" width="150px"></img>
+<img src="https://static.wikia.nocookie.net/yokaiwatch/images/7/7f/Yoink_Art.jpg" width="100px"></img>
 
 # tweetyoinker
 
@@ -13,5 +12,3 @@ Enter a link, the program will identify the type of media, if successful, it wil
 
 
 (screenshots coming soon)
-
-</center>
